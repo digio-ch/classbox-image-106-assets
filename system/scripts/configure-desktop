@@ -1,0 +1,5 @@
+su zli
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus
+xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorrdp0/workspace0/last-image -s /home/zli/Pictures/backgrounds/zli-ict-background.png
+xfconf-query -c xfce4-desktop -np /desktop-icons/file-icons/show-filesystem -t 'bool' -s 'false'
+exit
