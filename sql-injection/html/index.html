@@ -1,0 +1,72 @@
+<!Doctype html>
+<html>
+  <head>
+    <title>Modul 106 - Aufgabe 9.2: SQL-Injection</title>
+    <meta name="author" content="Damien Vouillamoz">
+    <meta charset="utf-8">
+    <style type="text/css">
+      body {
+        margin: 0px;
+        padding: 0px;
+        background-color: black;
+        color: #37ad00;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      table {
+        border: 1px solid #37ad00;
+        padding: 10px;
+      }
+      td {
+        padding: 10px;
+      }
+
+      td.login_btn {
+        display: flex;
+        justfy-content: flex-end;
+
+      }
+
+      code {
+        padding: 10px;
+        border: 1px dashed #37ad00;
+      }
+
+      .data {
+        color: red;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Modul 106 - Aufgabe 9.2: SQL-Injection</h1>
+    <h2>Login</h2>
+
+    <form name="login" method="get" action="/">
+    <table>
+      <tr>
+        <td>Login:</td>
+        <td><input type="text" name="username" required></td>
+      </tr>
+      <tr>
+        <td>Password:</td>
+        <td><input type="password" name="password" required></td>
+        <!-- SQL-Injection: ' OR '' = '  -->
+      </tr>
+      <tr>
+        <td colspan="2" class='login_btn'>
+          <input type="submit" value="Login">
+          <input type="hidden" name="sent" value="1">
+        </td>
+      </tr>
+    </table>
+  </form>
+  <br/>
+  <br/>
+  ###SQLQUERY###
+  <br/>
+  ###DATA###
+  </body>
+<html>

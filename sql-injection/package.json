@@ -1,0 +1,17 @@
+{
+  "name": "sql-injection-demo",
+  "version": "1.0.0",
+  "description": "Demonstration of SQL Injection in Modul 106",
+  "author": "Damien Vouillamoz <dv@digio.swiss>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node init_db.js && node server.js",
+    "dev": "node init_db.js && node-dev server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "mysql": "^2.18.1",
+    "node-dev": "^8.0.0",
+    "npm-watch": "^0.11.0"
+  }
+}

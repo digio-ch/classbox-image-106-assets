@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  mariadb:
+    container_name: mariadb-server
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb-server
+
+  sql-injection:
+    container_name: sql-injection
+    build: ./sql-injection/
+    restart: always
+    volumes:
+      - ./sql-injection:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "8081:8081"
+    depends_on:
+      mariadb-server
+    environment:
+      DB_HOST: localhost
+      DB_USER: root
+      DB_PASS: root
+    command: npm run dev
