@@ -1,0 +1,18 @@
+cd /root
+wget https://github.com/vouillamoz/MOD106/archive/refs/heads/main.zip -O MOD106.zip
+unzip MOD106.zip
+rm MOD106.zip
+mv /root/MOD106-main/docker-compose.yml /srv
+mv /root/MOD106-main/sql-injection /srv
+mkdir /home/zli/Documents
+mkdir /home/zli/Desktop
+mkdir /home/zli/Pictures
+mv /root/MOD106-main/106-exercises /home/zli/Documents
+mv /root/MOD106-main/system/scripts/* /usr/local/bin
+mv /root/MOD106-main/system/shortcuts/* /home/zli/Desktop
+mv /root/MOD106-main/system/pictures/* /home/zli/Pictures
+chown -R zli:zli /home/zli/
+chown zli:zli /usr/local/bin/*
+chmod u+x /usr/local/bin/*
+runuser -l zli -c "ln -s /home/zli/Documents/106-exercises /home/zli/Desktop/106-exercises"
+rm -Rf /root/MOD106-main
