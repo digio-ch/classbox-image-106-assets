@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Type=Link
+Name=phpMyAdmin
+Comment=
+Icon=/home/zli/Pictures/icons/phpMyAdmin.svg
+URL=http://localhost:8080

@@ -1,7 +1,5 @@
-version: '3'
-
 services:
-  mariadb:
+  mariadb-server:
     container_name: mariadb-server
     image: mariadb:latest
     restart: always
@@ -17,7 +15,7 @@ services:
     image: phpmyadmin/phpmyadmin
     restart: always
     environment:
-      PMA_HOST: mariadb
+      PMA_HOST: mariadb-server
       PMA_USER: root
       PMA_PASSWORD: root
     ports:
@@ -35,9 +33,9 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      mariadb-server
+      - mariadb-server
     environment:
-      DB_HOST: localhost
+      DB_HOST: mariadb-server
       DB_USER: root
       DB_PASS: root
     command: npm run dev
