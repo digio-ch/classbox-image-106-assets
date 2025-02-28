@@ -1,7 +1,7 @@
 services:
   mariadb-server:
     container_name: mariadb-server
-    image: mariadb:latest
+    image: mariadb:11.4.5
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
