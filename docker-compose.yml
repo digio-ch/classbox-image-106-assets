@@ -1,28 +1,41 @@
 services:
   mariadb-server:
     container_name: mariadb-server
-    image: mariadb:11.4.5
-    restart: always
+    image: mariadb:10.6
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_ROOT_HOST: 172.22.0.%
     ports:
       - "3306:3306"
     volumes:
       - ./mariadb_data:/var/lib/mysql
       - /home/classbox/Desktop/106-exercises/:/workspace
+    healthcheck:
+      test: '/usr/bin/mysql --user=root --password=root --execute "SHOW DATABASES;"'
+      interval: 3s
+      timeout: 1s
+      retries: 5
+    networks:
+      network:
+        ipv4_address: 172.22.0.3
 
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin
     restart: always
     environment:
-      PMA_HOST: mariadb-server
+      PMA_HOST: 172.22.0.3
       PMA_USER: root
       PMA_PASSWORD: root
     ports:
       - "8080:80"
     depends_on:
-      - mariadb-server
+      mariadb-server:
+        condition: service_healthy
+    networks:
+      network:
+        ipv4_address: 172.22.0.2
 
   sql-injection:
     container_name: sql-injection
@@ -34,9 +47,21 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - mariadb-server
+      mariadb-server:
+        condition: service_healthy
     environment:
-      DB_HOST: mariadb-server
+      DB_HOST: 172.22.0.3
       DB_USER: root
       DB_PASS: root
     command: npm run dev
+    networks:
+      network:
+        ipv4_address: 172.22.0.4
+        
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/24
+          gateway: 172.22.0.1
