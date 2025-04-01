@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 
   //SQL Login
   if (req.query.sent === "1") {
+    console.log('Received login attempt: User=' + req.query.username + ' Password=' + req.query.password);
     //Connect to Database
     var con = mysql.createConnection({
       host: process.env.DB_HOST,
@@ -35,11 +36,13 @@ app.get("/", (req, res) => {
       req.query.password +
       "';";
 
+    console.log('Run SQL-Query: ' + sql);
     con.query(sql, function (err, results) {
       sql_data = "<code>" + sql + "</code>";
 
       if (!err) {
         if (results.length && allowedUsernames.includes(req.query.username)) {
+          console.log("found user");
           data = "<div class='data'>";
           data +=
             "<h4>Ich habe erfolgreich einen SQL-Injection Angriff durchgef  hrt!</h4>";
@@ -57,24 +60,29 @@ app.get("/", (req, res) => {
           data += "</div>";
         }
       }
+      else {
+        console.log(err);
+      }
 
       con.end();
-
-      //Output
-      fs.readFile(filePath, { encoding: "utf-8" }, function (err, html) {
-        if (!err) {
-          html = html.replace(/###DATA###/g, data);
-          html = html.replace(/###SQLQUERY###/g, sql_data);
-
-          res.writeHead(200, { "Content-Type": "text/html" });
-          res.write(html);
-          res.end();
-        } else {
-          console.log(err);
-        }
-      });
     });
   }
+
+  //Output
+  console.log("Reading template file: " + filePath)
+  fs.readFile(filePath, { encoding: "utf-8" }, function (err, html) {
+    if (!err) {
+      html = html.replace(/###DATA###/g, data);
+      html = html.replace(/###SQLQUERY###/g, sql_data);
+
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.write(html);
+      res.end();
+    } else {
+      console.log(err);
+    }
+  });
+  
 });
 
 function getSecretByUsername(results, username) {
